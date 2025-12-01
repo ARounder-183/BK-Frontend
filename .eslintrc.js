@@ -1,17 +1,7 @@
 module.exports = {
     root: true,
-    extends: ["@blueking/eslint-config-bk/vue"],
-    globals: {
-        BK_LOGIN_URL: false,
+    extends: ["react-app"],
+    rules: {
+        // 添加自定义规则
     },
-    overrides: [
-        {
-            files: ["*.js", "*.ts"],
-            rules: {
-                "no-param-reassign": "off",
-                "@typescript-eslint/no-require-imports": "off",
-                "@typescript-eslint/explicit-member-accessibility": "off",
-            },
-        },
-    ],
 };
