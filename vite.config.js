@@ -9,24 +9,13 @@ export default defineConfig(({ mode }) => {
     const envConfig = dotenv.config({ path: envFile }).parsed || {};
 
     return {
-        base: envConfig.BK_SITE_URL || "/",
-        envPrefix: "BK_",
+        base: './',
+        build: {
+            outDir: 'build',
+            assetsDir: 'static'
+        },
         plugins: [react()],
         server: {
             port: 3000,
         },
-        resolve: {
-            alias: {
-                "@": path.resolve(__dirname, "src"),
-            },
-        },
-        build: {
-            outDir: "build",
-        },
-        esbuild: {
-            loader: "jsx",
-            include: /src\/.*\.jsx?$/,
-            exclude: [],
-        },
-    };
 });

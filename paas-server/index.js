@@ -1,3 +1,8 @@
+// 在所有代码之前加载环境变量
+require("dotenv").config({
+    path: `.bk.${process.env.NODE_ENV || "development"}.env`,
+});
+
 /**
  * @file prod server
  * 静态资源
@@ -10,6 +15,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const history = require("connect-history-api-fallback");
 const user = require("./middleware/user");
+const artTemplate = require("express-art-template");
 
 const mockTable = require("./api/table");
 
@@ -42,29 +48,51 @@ const GLOBAL_VAR = {
 // 打印读取到的环境变量
 console.log("Reading environment variables:", GLOBAL_VAR);
 
-// all environments
+// 静态资源服务
+// 使用 BK_SITE_URL 作为虚拟路径前缀，以正确提供静态文件
+app.use(
+    process.env.BK_SITE_URL,
+    Express.static(path.join(__dirname, "..", "build"))
+);
+
+const buildDir = path.resolve(__dirname, "..", "build");
+
 app.use(
     history({
+        index: "/",
         rewrites: [
             {
-                // connect-history-api-fallback 默认会对 url 中有 . 的 url 当成静态资源处理，
-                // 但在蓝鲸里，saas 的 url 可能会出现格式为 /o/bk_iam.access/saas/xxx/ 的情况，
-                // connect-history-api-fallback 会认为 bk_iam.access 是一个静态资源，从而在 express.static
-                // 的处理中返回 404，所以这里需要排除这种情况
-                from: /^\/o\/\w+\.\w+\/.*$/,
-                to: (context) => context.parsedUrl.pathname,
+                from: /\/(\d+\.)*\d+$/,
+                to: "/",
+            },
+            {
+                from: /\/\/+.*\..*\//,
+                to: "/",
             },
         ],
     })
 );
 
-// 静态资源服务
-app.use(Express.static(path.join(__dirname, "..", "build")));
-
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+/**
+ * 首页
+ */
+app.get("/", (req, res) => {
+    const scriptName = (req.headers["x-script-name"] || "").replace(/\//g, "");
+    if (scriptName) {
+        GLOBAL_VAR.BK_STATIC_URL = `/${scriptName}`;
+        GLOBAL_VAR.SITE_URL = `/${scriptName}`;
+    } else {
+        GLOBAL_VAR.BK_STATIC_URL = "";
+        GLOBAL_VAR.SITE_URL = "";
+    }
+    res.render(path.join(buildDir, "index.html"), GLOBAL_VAR);
 });
 
+app.use("/static", Express.static(path.join(buildDir, "static")));
+app.set("views", buildDir);
+app.engine("html", artTemplate);
+app.set("view engine", "html");
+
 app.listen(PORT, () => {
-    console.log(`app listening on port ${PORT}!\n`);
+    console.log(`App is running in port ${PORT}`);
 });
