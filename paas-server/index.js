@@ -39,6 +39,9 @@ const GLOBAL_VAR = {
     BK_LOGIN_URL: process.env.BK_LOGIN_URL || "",
 };
 
+// 打印读取到的环境变量
+console.log("Reading environment variables:", GLOBAL_VAR);
+
 // all environments
 app.use(
     history({
