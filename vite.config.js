@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
 
     return {
         base: envConfig.BK_SITE_URL || "/",
+        define: {
+            "process.env.BK_SITE_URL": JSON.stringify(envConfig.BK_SITE_URL),
+        },
         plugins: [react()],
         server: {
             port: 3000,

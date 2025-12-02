@@ -5,7 +5,7 @@ import ExampleComponent from '../components/ExampleComponent';
 
 function AppRouter() {
   return (
-    <Router>
+    <Router basename={process.env.BK_SITE_URL}>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/example" element={<ExampleComponent />} />
