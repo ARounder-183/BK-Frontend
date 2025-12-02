@@ -25,17 +25,17 @@ app.use(user);
 
 // 注入全局变量
 const GLOBAL_VAR = {
-    SITE_URL: process.env.SITE_URL || "",
+    SITE_URL: process.env.BK_SITE_URL || "",
     BK_STATIC_URL: process.env.BK_STATIC_URL || "",
     // 当前应用的环境，预发布环境为 stag，正式环境为 prod
-    BKPAAS_ENVIRONMENT: process.env.BKPAAS_ENVIRONMENT || "",
+    BKPAAS_ENVIRONMENT: process.env.BK_PAAS_ENVIRONMENT || "",
     // EngineApp名称，拼接规则：bkapp-{appcode}-{BKPAAS_ENVIRONMENT}
-    BKPAAS_ENGINE_APP_NAME: process.env.BKPAAS_ENGINE_APP_NAME || "",
+    BKPAAS_ENGINE_APP_NAME: process.env.BK_PAAS_ENGINE_APP_NAME || "",
     // 内部版对应ieod，外部版对应tencent，混合云版对应clouds
-    BKPAAS_ENGINE_REGION: process.env.BKPAAS_ENGINE_REGION || "",
+    BKPAAS_ENGINE_REGION: process.env.BK_PAAS_ENGINE_REGION || "",
     // APP CODE
-    BKPAAS_APP_ID: process.env.BKPAAS_APP_ID || "",
-    BKPAAS_APP_SECRET: process.env.BKPAAS_APP_SECRET || "",
+    BKPAAS_APP_ID: process.env.BK_PAAS_APP_ID || "",
+    BKPAAS_APP_SECRET: process.env.BK_PAAS_APP_SECRET || "",
     BK_LOGIN_URL: process.env.BK_LOGIN_URL || "",
 };
 
