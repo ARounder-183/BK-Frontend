@@ -58,6 +58,10 @@ app.use(
 // 静态资源服务
 app.use(Express.static(path.join(__dirname, "..", "build")));
 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
+
 app.listen(PORT, () => {
     console.log(`app listening on port ${PORT}!\n`);
 });
