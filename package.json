@@ -10,7 +10,7 @@
     "eject": "react-scripts eject",
     "dev": "vite",
     "preview": "vite preview",
-    "server": "vite preview --port 5000"
+    "server": "node ./paas-server/index.js"
   },
   "keywords": [],
   "license": "ISC",

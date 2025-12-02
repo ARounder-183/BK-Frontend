@@ -38,3 +38,26 @@ const GLOBAL_VAR = {
     BKPAAS_APP_SECRET: process.env.BKPAAS_APP_SECRET || "",
     BK_LOGIN_URL: process.env.BK_LOGIN_URL || "",
 };
+
+// all environments
+app.use(
+    history({
+        rewrites: [
+            {
+                // connect-history-api-fallback 默认会对 url 中有 . 的 url 当成静态资源处理，
+                // 但在蓝鲸里，saas 的 url 可能会出现格式为 /o/bk_iam.access/saas/xxx/ 的情况，
+                // connect-history-api-fallback 会认为 bk_iam.access 是一个静态资源，从而在 express.static
+                // 的处理中返回 404，所以这里需要排除这种情况
+                from: /^\/o\/\w+\.\w+\/.*$/,
+                to: (context) => context.parsedUrl.pathname,
+            },
+        ],
+    })
+);
+
+// 静态资源服务
+app.use(Express.static(path.join(__dirname, "..", "build")));
+
+app.listen(PORT, () => {
+    console.log(`app listening on port ${PORT}!\n`);
+});
