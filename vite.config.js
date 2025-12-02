@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-    base: "/stag--ygq-bk-gmserver/",
+    base: process.env.SITE_URL || "/",
     plugins: [react()],
     server: {
         port: 3000,
