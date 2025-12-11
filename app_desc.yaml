@@ -1,0 +1,13 @@
+specVersion: 3
+module:
+  language: NodeJS
+  spec:
+    processes:
+      - name: web
+        procCommand: npm run server
+        services:
+          - name: web
+            exposedType:
+              name: bk/http
+            targetPort: 5000
+            port: 80
